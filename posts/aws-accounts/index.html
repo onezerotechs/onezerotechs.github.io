@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Eleventy v1.0.2">
+    
+    
+    <meta name="description" content="Tecnologia do início ao fim">
+    
+    <title>AWS Accounts</title>
+
+    <link rel="stylesheet" href="/css/css.css"> 
+    
+</head>
+<body>
+    <a href="/">..</a>
+
+<article>
+  <p class="post-meta">
+    <time datetime="Fri Dec 26 2025 09:30:53 GMT-0300 (Horário Padrão de Brasília)">2025-12-26</time>
+  </p>
+  
+  <h1>AWS Accounts</h1>
+  
+  <p>IAM User (Usuário IAM) Representa um usuário humano que precisa acessar a AWS.</p>
+<p>Pode ter credenciais de login (usuário/senha) para acessar o AWS Management Console e oode ter credenciais de acesso (chave de acesso e secreta) para interagir com a AWS via API, CLI ou SDKs.</p>
+<p>Possui permissões atribuídas por meio de IAM Policies.<br>
+As credenciais podem expirar ou precisar de rotação manual.<br>
+Service Account Não é um conceito nativo no AWS como no GCP ou Azure.<br>
+No AWS, uma &quot;conta de serviço&quot; geralmente é representada por um IAM Role (Função IAM).<br>
+Uma IAM Role pode ser assumida por instâncias EC2, Lambda Functions, ECS Tasks, entre outros serviços.<br>
+Permite acesso temporário usando AWS Security Token Service (STS), evitando credenciais fixas.</p>
+<p>Pode ser vinculada a recursos AWS por meio de Instance Profiles (para EC2) ou Execution Roles (para Lambda).</p>
+<h3>Principais Diferenças</h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Característica</th>
+<th>IAM User</th>
+<th>Service Account (IAM Role)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uso principal</td>
+<td>Acesso humano</td>
+<td>Acesso para aplicações e serviços</td>
+</tr>
+<tr>
+<td>Autenticação</td>
+<td>Usuário/senha, Chaves de acesso</td>
+<td>Credenciais temporárias via STS</td>
+</tr>
+<tr>
+<td>Segurança</td>
+<td>Chaves precisam de rotação</td>
+<td>Não tem chaves permanentes</td>
+</tr>
+<tr>
+<td>Melhor prática</td>
+<td>Evitar chaves de acesso</td>
+<td>Preferido para automação</td>
+</tr>
+</tbody>
+</table>
+</div><p>Quando Usar Cada Um? Use IAM Users se um ser humano precisa de acesso direto à AWS (por exemplo, administradores, desenvolvedores).<br>
+Use IAM Roles para aplicações e serviços automatizados, garantindo mais segurança e menos risco de vazamento de credenciais.</p>
+
+</article>
+</body>
+</html>
