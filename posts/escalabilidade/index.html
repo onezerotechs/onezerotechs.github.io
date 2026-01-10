@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Eleventy v3.1.2">
+    
+    
+    <meta name="description" content="Tecnologia do início ao fim">
+    
+    <title>Escalabilidade</title>
+    <link rel="icon" href="/public/favicon.ico">
+    <link rel="stylesheet" href="/css/css.css"> 
+    
+</head>
+<body>
+    <a href="/">..</a>
+
+<article>
+  <p class="post-meta">
+  
+    <time datetime="09/01/2026">
+      09/01/2026
+    </time>
+  
+  </p>
+  
+  <h1>Escalabilidade</h1>
+  
+  <div class="post-content">
+    <p>Ruby escala?</p>
+<p>Essa é uma das discussões mais clássicas no mundo da programação. Geralmente, quando as pessoas dizem que &quot;Ruby não escala&quot;, elas estão se referindo a uma combinação de fatores técnicos e históricos, mas a realidade é um pouco mais sutil.</p>
+<p>Aqui vão os principais motivos por trás dessa fama:</p>
+<ol>
+<li>O Global Interpreter Lock (GIL)</li>
+</ol>
+<p>O principal &quot;vilão&quot; técnico é o GIL. Ele é um mecanismo no interpretador padrão do Ruby (MRI) que impede que mais de uma thread execute código Ruby ao mesmo tempo em um único processo.</p>
+<p>Consequência: Mesmo que seu servidor tenha 32 núcleos de CPU, um único processo Ruby não consegue aproveitar todos eles simultaneamente para tarefas computacionais pesadas.</p>
+<p>Contorno: Para escalar, desenvolvedores Ruby costumam usar múltiplos processos (com ferramentas como Puma ou Unicorn), o que consome muito mais memória RAM do que o modelo de threads de linguagens como Go ou Java.</p>
+<ol start="2">
+<li>Consumo de Memória e Velocidade</li>
+</ol>
+<p>Ruby é uma linguagem de altíssimo nível, focada na felicidade do programador. Isso tem um preço:</p>
+<p>Uso de Memória: Objetos em Ruby são &quot;pesados&quot;. Aplicações grandes em Ruby on Rails tendem a consumir muito mais RAM do que equivalentes em Node.js ou Rust.</p>
+<p>Performance Bruta: Por ser interpretada e extremamente dinâmica, o tempo de execução de cálculos complexos é maior do que em linguagens compiladas.</p>
+<ol start="3">
+<li>O &quot;Fator Twitter&quot;</li>
+</ol>
+<p>Alguns se lembram que o Twitter começou com Ruby on Rails e depois migrou partes críticas para Scala e Java. Esse caso ficou muito famoso e criou o estigma de que o Ruby &quot;bate no teto&quot; quando o tráfego se torna gigantesco.</p>
+<p>Porém... Ruby escala sim!</p>
+<p>Dizer que Ruby não escala é, tecnicamente, um exagero. Grandes empresas provam o contrário:</p>
+<p>Shopify: Processa bilhões de dólares em transações usando um dos maiores monolitos de Ruby on Rails do mundo.</p>
+<p>GitHub: Quase toda a plataforma é construída sobre Ruby.</p>
+<p>Airbnb: Também cresceu e se manteve por muito tempo na base do Ruby.</p>
+<p>A diferença é que escalar Ruby custa mais caro. Você precisa de mais servidores e mais memória para aguentar o mesmo volume de requisições que uma linguagem mais performática aguentaria com menos recursos.</p>
+<p>Em resumo a performance é sim mais lenta que linguagens compiladas (Go, Java).</p>
+<p>O GIL dificulta o uso eficiente de multi-core em um único processo e o custo exige mais hardware (infraestrutura) para escalar horizontalmente.</p>
+<p>A produtividade é imbatível para criar produtos rapidamente mas no final das contas, para 99% das empresas, o gargalo não será a linguagem, mas sim o banco de dados ou a arquitetura do sistema.</p>
+<p>Node.js é Single-Thread, e ela escala então:  O que determina se uma linguagem escala ou não?</p>
+<p>O Node.js escala muito bem, mas ele faz isso de uma forma diferente de linguagens tradicionais como Java ou C#.</p>
+<p>O que determina se uma linguagem &quot;escala&quot; não é apenas a velocidade bruta ou quantas threads ela tem, mas sim como ela lida com a espera e como ela aproveita o hardware.</p>
+<p>O que determina a escalabilidade são três pilares:</p>
+<p>Modelo de Concorrência: Como a linguagem gerencia múltiplas tarefas ao mesmo tempo (Threads vs. Event Loop).</p>
+<p>Eficiência de I/O (Entrada e Saída): O quão bem ela lida com tarefas que dependem de rede, banco de dados ou arquivos sem &quot;travar&quot; o processador.</p>
+<p>Facilidade de Escalonamento Horizontal: O quão simples é rodar 10 ou 100 instâncias da mesma aplicação lado a lado.</p>
+<p>E então, como Node.js escala sendo Single-Thread?</p>
+<p>O Node.js usa um modelo chamado Single-Threaded Event Loop.</p>
+<p>Vamos a metáfora do garçom:</p>
+<p>Em linguagens Multi-thread, se um cliente pede um prato que demora, o garçom fica parado na frente da cozinha esperando o prato ficar pronto antes de atender o próximo. Para atender mais pessoas, você precisa contratar mais garçons (mais threads/memória).</p>
+<p>No Node.js, o garçom anota o pedido, passa para a cozinha e imediatamente vai atender outra mesa. Quando a cozinha termina, ela &quot;avisa&quot; o garçom, e ele entrega o prato no primeiro intervalo que tiver.</p>
+<p>Por isso o Node.js escala: Ele é extremamente eficiente para aplicações que fazem muitas operações de rede (APIs, Chats, Streaming), pois a &quot;thread&quot; nunca fica parada esperando o banco de dados responder.</p>
+<p>Comparativo de Estratégias de Escala</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Linguagem/Runtime</th>
+<th>Estratégia de Escala</th>
+<th>Ponto Forte</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node.js</td>
+<td>Event Loop (Assíncrono)</td>
+<td>Milhares de conexões simultâneas com pouca memória.</td>
+</tr>
+<tr>
+<td>Ruby (MRI)</td>
+<td>Processos (GIL)</td>
+<td>Simplicidade e velocidade de desenvolvimento.</td>
+</tr>
+<tr>
+<td>Go</td>
+<td>Goroutines (Threads leves)</td>
+<td>Alta performance em processamento paralelo real.</td>
+</tr>
+<tr>
+<td>Java</td>
+<td>Multi-threading Nativo</td>
+<td>Estabilidade em sistemas corporativos massivos.</td>
+</tr>
+</tbody>
+</table>
+</div><p>Mas quando o Node.js &quot;bate no teto&quot;?</p>
+<p>O Node.js sofre quando você precisa de processamento pesado de CPU (como edição de vídeo ou cálculos matemáticos complexos). Como só existe um &quot;garçom&quot;, se ele começar a cozinhar (processar) em vez de apenas anotar pedidos, ele para de atender as outras mesas e o sistema trava.</p>
+<p>Para resolver isso e usar todos os núcleos do processador, o Node.js usa o módulo Cluster ou ferramentas como o PM2, que basicamente criam uma cópia do processo para cada núcleo da sua CPU.</p>
+<p>E o que são o Event Loops?</p>
+<p>Para entender a diferença entre Threads e Event Loop, imagine que você está gerenciando uma central de atendimento. Existem duas formas principais de organizar o trabalho:</p>
+<ol>
+<li>Modelo de Multi-Threads (O exército de atendentes)</li>
+</ol>
+<p>Imagine que cada cliente que liga é atendido por um funcionário exclusivo.</p>
+<p>Como funciona: Se 10 pessoas ligam, você precisa de 10 funcionários. Se um cliente pede para o atendente esperar enquanto ele procura um documento (isso é o equivalente a uma consulta ao banco de dados ou leitura de arquivo), o atendente fica parado, segurando a linha e sem fazer nada, apenas esperando.</p>
+<p>Vantagem: Se um cliente tem um problema muito complexo que exige muito raciocínio (processamento de CPU), ele não atrapalha os outros, pois cada um tem seu próprio atendente.</p>
+<p>Desvantagem: Funcionários custam caro (memória RAM). Se 10.000 pessoas ligarem ao mesmo tempo, você precisaria de 10.000 funcionários, o que quebraria a empresa. Além disso, gerenciar muitos funcionários conversando entre si pode gerar confusão (deadlocks e race conditions).</p>
+<ol start="2">
+<li>Modelo de Event Loop (O atendente multitarefa)</li>
+</ol>
+<p>Imagine que existe apenas um único atendente extremamente rápido.</p>
+<p>Como funciona: Ele atende a ligação, anota o pedido e, se o cliente diz &quot;espere um pouco&quot;, o atendente diz &quot;me ligue de volta quando estiver pronto&quot; ou &quot;anotei seu número, te ligo quando o documento chegar&quot; e imediatamente pula para a próxima ligação.</p>
+<p>Vantagem: Com apenas um atendente, você consegue gerenciar milhares de chamadas, porque ele nunca fica parado esperando. Ele só gasta tempo &quot;atendendo&quot; (executando código) e delega a &quot;espera&quot; para outros sistemas (como o sistema operacional ou o banco de dados).</p>
+<p>Desvantagem: Se um único cliente fizer uma pergunta que exige que o atendente faça um cálculo matemático de 10 minutos na cabeça dele, ninguém mais é atendido. A fila inteira trava porque o único atendente está ocupado processando.</p>
+<p>Resumo Comparativo</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>Característica</th>
+<th>Multi-Threads (ex: Java, C#)</th>
+<th>Event Loop (ex: Node.js, Python Async)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Execução</td>
+<td>Várias tarefas em paralelo real.</td>
+<td>Uma tarefa por vez (concorrência).</td>
+</tr>
+<tr>
+<td>Uso de Memória</td>
+<td>Alto (cada thread consome RAM).</td>
+<td>Baixo (apenas um processo principal).</td>
+</tr>
+<tr>
+<td>Ponto Forte</td>
+<td>Cálculos pesados, edição de vídeo.</td>
+<td>APIs, Chats, I/O intenso (muita rede).</td>
+</tr>
+<tr>
+<td>Ponto Fraco</td>
+<td>Difícil de programar (conflitos).</td>
+<td>Se &quot;travar&quot; o loop, a app inteira para.</td>
+</tr>
+</tbody>
+</table>
+</div><p>Qual escolher?</p>
+<p>Se o seu sistema vai fazer muita conta (ex: inteligência artificial ou criptografia), as Threads são melhores.</p>
+<p>Se o seu sistema vai lidar com milhares de usuários fazendo requisições simples ao banco de dados (ex: redes sociais, e-commerce), o Event Loop escala de forma muito mais barata e eficiente.</p>
+<p>Voltando ao papo de escalar...</p>
+<p>Já que você viu que o Node.js &quot;finge&quot; ser mono-thread mas usa a Libuv (que tem um pool de threads escondido para tarefas pesadas), a pergunta que fica é:</p>
+<p>Se o Node.js consegue escalar tão bem usando esse truque, por que o Ruby não fez o mesmo?</p>
+<p>A resposta é que o Ruby nasceu para ser simples e legível para humanos, enquanto o Node.js nasceu (em 2009) já focado exclusivamente em resolver o problema de conexões simultâneas.</p>
+<p>Você prefere uma linguagem que te dê produtividade máxima (escrever pouco e fazer muito) ou uma que te dê controle total sobre como os recursos do computador são usados?</p>
+<p>E escalar horizontalmente afinal, o que isso significa?</p>
+<p>Essa é uma confusão muito comum, especialmente com a popularidade do Docker e do Kubernetes, abaixo explico a diferença entre o conceito e a ferramenta.</p>
+<ol>
+<li>Escalar Horizontal vs. Vertical</li>
+</ol>
+<p>Imagine que você tem um caminhão carregando caixas.</p>
+<p>Escalar Vertical (Scale Up): Você troca o motor do caminhão por um mais potente e aumenta a carroceria. É uma máquina só, cada vez maior.</p>
+<p>Escalar Horizontal (Scale Out): Você contrata mais caminhões idênticos. Se um quebrar ou a carga aumentar, você coloca mais um na estrada.</p>
+<p>Quando você diz que vai &quot;subir mais Pods&quot;, você está escalando horizontalmente.</p>
+<ol start="2">
+<li>&quot;Sem aumentar o hardware físico&quot;?</li>
+</ol>
+<p>Aqui está o ponto principal: Eventualmente, você precisará de mais hardware físico.</p>
+<p>Se o seu servidor (Node/Cluster físico) tem 16GB de RAM e cada Pod consome 2GB, você consegue subir 8 Pods.</p>
+<p>Se você precisar de 20 Pods, você terá que adicionar mais RAM ao servidor atual ou (o mais comum no escalonamento horizontal) adicionar um novo servidor ao seu cluster.</p>
+<p>A vantagem da escala horizontal é que você pode espalhar esses Pods em 10 máquinas baratas em vez de comprar uma única máquina caríssima que pode falhar e derrubar tudo.</p>
+<ol start="3">
+<li>Mas só é possível escalar usando containers?</li>
+</ol>
+<p>Na verdade não. O conceito de escala horizontal existe muito antes do Docker.</p>
+<p>Antes dos containers e Pods, fazíamos assim:</p>
+<p>Virtual Machines (VMs): Você criava uma imagem da sua máquina Linux com o Ruby/Node instalado e subia 10 instâncias na AWS.</p>
+<p>Bare Metal: Você comprava 10 servidores físicos, instalava tudo neles e colocava um</p>
+<p>Load Balancer (como o Nginx) na frente para distribuir os usuários entre eles.</p>
+<p>E por que usar Containers/Pods?</p>
+<p>Usamos containers porque eles tornam a escala horizontal muita mais rápida e barata:</p>
+<p>Isolamento: Você garante que o Pod 1 não vai interferir no Pod 2.</p>
+<p>Velocidade: Subir um container leva segundos. Subir uma Máquina Virtual (VM) ou ligar um servidor físico leva minutos.</p>
+<p>Eficiência: Você consegue &quot;espremer&quot; vários containers dentro de uma mesma máquina física, aproveitando cada gota de CPU e RAM disponível.</p>
+<p>O papel do Load Balancer</p>
+<p>Para escalar horizontalmente (seja com Pods, VMs ou servidores físicos), você obrigatoriamente precisa de um Load Balancer. Ele é o &quot;guarda de trânsito&quot; que recebe o acesso do usuário e decide para qual Pod enviar aquela requisição.</p>
+<p>Resumo</p>
+<p>Escalar Horizontal: Adicionar mais instâncias (Pods, máquinas, processos).</p>
+<p>Hardware: Você escala horizontalmente dentro do hardware que tem até ele acabar; depois, adiciona mais hardware (nós/máquinas) ao cluster.</p>
+<p>Containers: São apenas a forma mais moderna e eficiente de fazer isso, mas não a única.</p>
+<p>Mas... não tem milagre. Posso ter problemas de concorrência ou duplicidade de registros usando vários Pods ou mesmo várias VMs com a mesma aplicação</p>
+<p>Não existe bala de prata. Escalar horizontalmente resolve o problema de performance, mas cria uma categoria inteira de novos problemas chamados Sistemas Distribuídos.</p>
+<p>Quando você tem 10 Pods rodando, eles não sabem da existência um do outro. Se você não cuidar da lógica, o &quot;milagre&quot; vira um pesadelo.</p>
+<p>Aqui estão os três problemas clássicos que você pode enfrentar:</p>
+<ol>
+<li>Condição de Corrida (Race Conditions)</li>
+</ol>
+<p>Imagine um sistema de saldo bancário. O usuário tem R$ 100.</p>
+<p>Pod A recebe uma requisição para sacar R$ 80. Ele lê o banco: &quot;Saldo é 100&quot;.</p>
+<p>No mesmo milissegundo, o Pod B recebe uma requisição para sacar R$ 50. Ele lê o banco: &quot;Saldo é 100&quot;.</p>
+<p>Os dois aprovam o saque e atualizam o saldo. No final, o usuário sacou R$ 130, mas o saldo final pode ficar como R$ 20 ou R$ 50, dependendo de quem gravou por último.</p>
+<p>Como resolver: Você precisa usar Locks no banco de dados (Optimistic/Pessimistic Locking) ou filas de processamento (Redis/RabbitMQ) para garantir que certas operações sejam atômicas.</p>
+<ol start="2">
+<li>Duplicidade de Registros</li>
+</ol>
+<p>Se o seu código gera um ID único baseado no tempo da máquina (timestamp), e dois Pods geram um registro no exatíssimo microssegundo, você pode ter IDs duplicados.</p>
+<p>Como resolver: Usar UUIDs (Identificadores Únicos Universais) ou bancos de dados que garantam a unicidade através de chaves primárias e índices únicos.</p>
+<ol start="3">
+<li>O Problema da Sessão (Sticky Sessions)</li>
+</ol>
+<p>Se um usuário faz login no Pod A, os dados da sessão dele estão na memória RAM do Pod A.</p>
+<p>Se a próxima página que ele clicar for direcionada pelo Load Balancer para o Pod B, o Pod B vai dizer: &quot;Quem é você? Não te conheço&quot;. O usuário será deslogado.</p>
+<p>Como resolver: Aplicações escaláveis precisam ser Stateless (sem estado). Você nunca guarda nada na memória do servidor. A sessão deve ser guardada em um lugar compartilhado, como um Redis ou via JWT (tokens assinados no lado do cliente).</p>
+<p>O programador precisa mudar o &quot;chip&quot; mental de:</p>
+<p>De: Vou salvar esse arquivo na pasta /uploads</p>
+<p>Para: Vou salvar no S3 (Cloud Storage), porque o outro Pod não enxerga meu disco local.</p>
+<p>De: Vou criar uma variável global para contar os acessos</p>
+<p>Para: Vou usar um contador no Redis, porque cada Pod tem sua própria variável global</p>
+<p>Resumo:</p>
+<p>Escalar horizontalmente exige que sua aplicação seja um &quot;processo descartável&quot;. Se você deletar o Pod agora e subir outro, nada deve ser perdido. Se você tem arquivos locais ou variáveis em memória que importam, sua aplicação não está pronta para escalar horizontalmente.</p>
+
+  </div>
+</article>
+</body>
+</html>
